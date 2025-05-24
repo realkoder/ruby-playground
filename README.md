@@ -121,14 +121,74 @@ bin/rails server
 ```
 
 Generate a controller:
+
 ```bash
 rails generate controller Home index
 ```
 
-
 [Intro to Rails and folder structure explained](https://guides.rubyonrails.org/getting_started.html)
 
 If issues with extension Run `bundle install` standing in the created _Rails app_ to install all the required gems specified in the Gemfile.
+
+---
+
+<br>
+
+### Rails Migtation/ActiveRecord
+
+Commands to create a migration with simple table and related ActiveRecord model and activate / rollback the migraiton.
+
+```bash
+# Create a simple products table with related Product model
+bin/rails generate model Product name:string
+
+# Running the migration
+bin/rails db:migrate
+
+# Rollback latest migration
+bin/rails db:rollback
+```
+
+---
+
+### Rails console
+
+The Ruby on Rails console is used to interact with ActiveRecords.
+
+```bash
+# Activate Rails console
+bin/rails console
+
+# Get column names for created Product
+Product.column_names
+=> ["id", "name", "created_at", "updated_at"]
+
+# Create a new Product - id is nil since it's not persisted in DB
+product = Product.new(name: "T-Shirt")
+=> #<Product:0x000000012fd524f8 id: nil, name: "T-Shirt", created_at: nil, updated_at: nil>
+
+# Write to DB
+product.save
+  TRANSACTION (0.4ms)  BEGIN immediate TRANSACTION /*application='Store'*/
+  Product Create (9.9ms)  INSERT INTO "products" ("name", "created_at", "updated_at") VALUES ('T-Shirt', '2025-05-24 16:52:45.450023', '2025-05-24 16:52:45.450023') RETURNING "id" /*application='Store'*/
+  TRANSACTION (0.7ms)  COMMIT TRANSACTION /*application='Store'*/
+=> true
+
+# Instead of using .new -> .create can be used to instantiate and persist Product in a single call
+product = Product.create(name: "Crewneck")
+  TRANSACTION (0.2ms)  BEGIN immediate TRANSACTION /*application='Store'*/
+  Product Create (2.7ms)  INSERT INTO "products" ("name", "created_at", "updated_at") VALUES ('Crewneck', '2025-05-24 16:54:44.025091', '2025-05-24 16:54:44.025091') RETURNING "id" /*application='Store'*/
+  TRANSACTION (0.7ms)  COMMIT TRANSACTION /*application='Store'*/
+=> #<Product:0x000000013eb27318 id: 2, name: "Crewneck", created_at: "2025-05-24 16:54:44.025091000 +0000", updated_at: "2025-05-24 16:54:44.025091000 +0000">
+
+# Query records using Rails console
+Product.all
+Product.all
+  Product Load (3.2ms)  SELECT "products".* FROM "products" /* loading for pp */ LIMIT 11 /*application='Store'*/
+=>
+[#<Product:0x000000013eb20798 id: 1, name: "T-Shirt", created_at: "2025-05-24 16:52:45.450023000 +0000", updated_at: "2025-05-24 16:52:45.450023000 +0000">,
+ #<Product:0x000000013eb20658 id: 2, name: "Crewneck", created_at: "2025-05-24 16:54:44.025091000 +0000", updated_at: "2025-05-24 16:54:44.025091000 +0000">]
+```
 
 ---
 
