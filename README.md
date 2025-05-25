@@ -134,9 +134,9 @@ If issues with extension Run `bundle install` standing in the created _Rails app
 
 <br>
 
-### Rails Migtation/ActiveRecord
+### Rails Migtation/Active Record
 
-Commands to create a migration with simple table and related ActiveRecord model and activate / rollback the migraiton.
+Commands to create a migration with simple table and related Active Record model and activate / rollback the migraiton.
 
 ```bash
 # Create a simple products table with related Product model
@@ -148,6 +148,44 @@ bin/rails db:migrate
 # Rollback latest migration
 bin/rails db:rollback
 ```
+
+#### Rails ActiveRecord Callbacks (Cheat Sheet)
+
+**Callbacks** are hooks that let you run code at certain points in an object's lifecycle.
+
+**Common Callbacks**
+
+| Callback         | When it Runs                  |
+| ---------------- | ----------------------------- |
+| `before_save`    | Before saving (create/update) |
+| `after_save`     | After saving (create/update)  |
+| `before_create`  | Before creating a new record  |
+| `after_create`   | After creating a new record   |
+| `before_update`  | Before updating a record      |
+| `after_update`   | After updating a record       |
+| `before_destroy` | Before destroying a record    |
+| `after_destroy`  | After destroying a record     |
+
+**Simple examples**
+
+```ruby
+class Product < ApplicationRecord
+  before_destroy :log_before
+  after_destroy :log_after
+
+  private
+
+  def log_before
+    puts "About to destroy product #{id}"
+  end
+
+  def log_after
+    puts "Destroyed product #{id}"
+  end
+end
+```
+
+---
 
 #### Validations
 
@@ -161,8 +199,27 @@ class Product < ApplicationRecord
 end
 ```
 
+Test the _presense validation_ in _Rails Console_
 
+```bash
+# Reload console if running while adding the validation
+reload!
 
+# Check that validation works
+product = Product.new
+
+# Save the instantiated Product where name is nil
+product.save
+=> false
+
+# Get the validation error
+product.errors
+=> #<ActiveModel::Errors [#<ActiveModel::Error attribute=name, type=blank, options={}>]>
+
+# Generate a friendly error message
+product.errors.full_messages
+=> ["Name can't be blank"]
+```
 
 ---
 
@@ -175,6 +232,9 @@ Default _Ruby on Rails console_ uses the _development_ env.
 ```bash
 # Activate Rails console - enters in dev evn else usse bin/rails console test
 bin/rails console
+
+# Update the console if code changes such as an added presence validation
+reload!
 
 # Get column names for created Product
 Product.column_names
@@ -212,6 +272,9 @@ Product.where(name: "Crewneck")
 # Sort by a given column either asc or desc
 Product.order(name: asc)
 
+# Get amount of total records
+Product.count
+
 # Lookup a record by ID
 Product.find(1)
 
@@ -228,6 +291,16 @@ product.save
 product = Product.find(1)
 product.destroy
 
+```
+
+#### `destroy` vs `delete`
+
+- `destroy`: **Runs callbacks** (and dependent destroys)
+- `delete`: **Skips callbacks** (deletes directly from DB)
+
+```ruby
+product.destroy # Runs callbacks
+product.delete  # Skips callbacks
 ```
 
 ---
