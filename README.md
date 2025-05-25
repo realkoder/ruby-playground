@@ -149,14 +149,31 @@ bin/rails db:migrate
 bin/rails db:rollback
 ```
 
+#### Validations
+
+_Active Record_ provides _validations_ to ensure that data added adheres to defined rules.
+
+Add a `presence validation` to the _Product model_ to ensure that all _products_ must have a `name`.
+
+```ruby
+class Product < ApplicationRecord
+  validates :name, presence: true
+end
+```
+
+
+
+
 ---
 
 ### Rails console
 
-The Ruby on Rails console is used to interact with ActiveRecords.
+The _Ruby on Rails console_ is used to interact with _ActiveRecords_, following commands will show **creating, querying, sorting, filtering** etc.
+
+Default _Ruby on Rails console_ uses the _development_ env.
 
 ```bash
-# Activate Rails console
+# Activate Rails console - enters in dev evn else usse bin/rails console test
 bin/rails console
 
 # Get column names for created Product
@@ -188,6 +205,29 @@ Product.all
 =>
 [#<Product:0x000000013eb20798 id: 1, name: "T-Shirt", created_at: "2025-05-24 16:52:45.450023000 +0000", updated_at: "2025-05-24 16:52:45.450023000 +0000">,
  #<Product:0x000000013eb20658 id: 2, name: "Crewneck", created_at: "2025-05-24 16:54:44.025091000 +0000", updated_at: "2025-05-24 16:54:44.025091000 +0000">]
+
+# Query by searching for a specific column value
+Product.where(name: "Crewneck")
+
+# Sort by a given column either asc or desc
+Product.order(name: asc)
+
+# Lookup a record by ID
+Product.find(1)
+
+# Update a record by .update
+product = Product.find(1)
+product.update(name: "Hoodie")
+
+# Update a record by .save
+product = Product.find(1)
+product.name = "T-Shirt"
+product.save
+
+# Delete a record
+product = Product.find(1)
+product.destroy
+
 ```
 
 ---
