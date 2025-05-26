@@ -307,6 +307,63 @@ product.delete  # Skips callbacks
 
 <br>
 
+## Programming with Ruby
+
+### Loops
+
+```ruby
+# While loop
+i = 0
+while i < 5 do
+  puts "Iteration #{i}"
+  i += 1
+end
+
+# Times method
+5.times do |i|
+  puts "Iteration #{i}"
+end
+
+# For each with an array
+[1, 2, 3, 4, 5].each do |i|
+  puts "Iteration #{i}"
+end
+
+# For loop
+for i in 1..5 do
+  puts "Iteration #{i}"
+end
+
+# Loop method
+i = 0
+loop do
+  break if i >= 5
+  puts "Iteration #{i}"
+  i += 1
+end
+
+# Until loop
+i = 0
+until i == 5 do
+  puts "Iteration #{i}"
+  i += 1
+end
+
+# Upto method
+1.upto(5) do |i|
+  puts "Iteration #{i}"
+end
+
+# Downto method
+5.downto(1) do |i|
+  puts "Iteration #{i}"
+end
+```
+
+---
+
+<br>
+
 ## Ruby Courses 📖
 
 [The Odin Project](https://www.theodinproject.com/paths/full-stack-ruby-on-rails/courses/ruby)
