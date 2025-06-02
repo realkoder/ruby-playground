@@ -43,7 +43,7 @@ rbenv global 3.4.2
 ruby -v
 ```
 
-Using _Ruby LSP shopify_ extension for VSC.
+Using _Ruby LSP shopify_ extension for _VSC_.
 
 ---
 
@@ -134,7 +134,7 @@ If issues with extension Run `bundle install` standing in the created _Rails app
 
 <br>
 
-### Rails Migtation/Active Record
+### Rails Migration/Active Record
 
 Commands to create a migration with simple table and related Active Record model and activate / rollback the migraiton.
 
@@ -302,6 +302,66 @@ product.destroy
 product.destroy # Runs callbacks
 product.delete  # Skips callbacks
 ```
+
+---
+
+<br>
+
+## Rails Routing
+
+[Getting Started with Rails](https://guides.rubyonrails.org/getting_started.html):
+
+`There are 4 common actions you will generally need for a resource: Create, Read, Update, Delete (CRUD). This translates to 8 typical routes`
+
+Edit `config/routes.rb`:
+
+```ruby
+Rails.application.routes.draw do
+  get "home/index"
+
+  get "up" => "rails/health#show", as: :rails_health_check
+
+  # ===================================
+  # Routes defined for PRODUCTS
+  # ===================================
+  # get "/products", to: "products#index"
+
+  # get "/products/new", to: "products#new"
+  # post "/products", to: "products#create"
+
+  # get "/products/:id", to: "products#show"
+
+  # get "/products/:id/edit", to: "products#edit"
+  # patch "/products/:id", to: "products#update"
+  # put "/products/:id", to: "products#update"
+
+  # delete "/products/:id", to: "products#destroy"
+
+  # Creates all of the same CRUD routes as above for PRODUCTS
+  resources :products
+
+end
+
+```
+
+---
+
+<br>
+
+## Bundling & Gems
+
+With _Bundler_ we can define the _gems_ needed for the project and control the versions.
+
+Setup _Bundler_
+
+```bash
+# Setup Gemfile and Gemfile.lock
+bundle init
+
+# Add a gem to project
+bundle add colorize
+```
+
 
 ---
 
